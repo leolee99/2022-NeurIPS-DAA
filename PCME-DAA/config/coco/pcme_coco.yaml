@@ -1,0 +1,79 @@
+dataloader:
+    batch_size: 128
+    eval_batch_size: 64
+    num_workers: 6
+    crop_size: 224
+    word_dim: 768
+    random_erasing_prob: 0.2
+
+model:
+    name: pcme_bert
+    embed_dim: 1024
+    dimension: 1
+    cnn_type: resnet152
+    wemb_type: bert
+    word_dim: 768
+    cache_dir: null
+    img_attention: True
+    txt_attention: True
+    img_finetune: False
+    txt_finetune: False
+    img_probemb: True
+    txt_probemb: True
+    no_sigma_ln: True
+    n_samples_inference: 5
+    eval_method: matmul
+    pretrained_resnet_model_path: ''
+
+# optimizer configuration
+optimizer:
+    name: adamp
+    learning_rate: 0.00015
+    weight_decay: 0.0
+
+# lr scheduler configuration
+lr_scheduler:
+    name: cosine_annealing
+    T_max: 30
+
+# criterion configuration
+criterion:
+    name: pcme
+    init_negative_scale: 15
+    init_shift: 15
+    num_samples: 5
+    vib_beta: 0.00001
+    #vib_beta: 0
+    daa_beta: 1000
+    ap_beta: 0
+    criterion__negative_sampling_ratio: -1
+    batch_size: 128
+
+# detailed training configuration
+train:
+    pretrain_save_path: log/pretrain_last.pth
+    best_pretrain_save_path: log/pretrain_best.pth
+    model_save_path: log/model_last.pth
+    best_model_save_path: log/model_best.pth
+    epoch_model_save_path: log/
+    restore_pretrain_path: log/pretrain-1.pth
+    restore_finetune_path: log/epoch-1.pth
+    restore_flag: False
+    restore_epoch: 1
+    pretrain_epochs: 30
+    pretrain_warmup_epochs: 3
+    finetune_warmup_epochs: 0
+    finetune_epochs: 40
+    finetune_lr_decay: 0.1
+    log_step: 100
+    grad_clip: 2
+    val_epochs: 1
+    pretrain_val_epochs: 1
+    save_thresold: 0
+    use_fp16: TrueW
+    trained_method: DAA
+    gpus: 7
+
+
+test:
+    gpus: 7
